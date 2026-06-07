@@ -6,6 +6,36 @@ export default function Home() {
   const [input, setInput] = useState("");
   const [statements, setStatements] = useState([]);
   const [darkMode, setDarkMode] = useState(true);
+  const [enhancing, setEnhancing] = useState(false);
+
+  const enhanceText = async () => {
+    if (!input.trim()) return;
+
+    try {
+      setEnhancing(true);
+
+      const res = await fetch("/api/enhance", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: input,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.enhanced) {
+        setInput(data.enhanced.trim());
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Failed to enhance text.");
+    } finally {
+      setEnhancing(false);
+    }
+  };
 
   const addStatement = () => {
     const words = input.trim().split(/\s+/);
@@ -83,7 +113,6 @@ export default function Home() {
       }`}
     >
       <div className="max-w-4xl mx-auto p-6">
-        {/* Header */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-5xl font-extrabold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
@@ -111,7 +140,6 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Input Card */}
         <div
           className={`rounded-3xl p-6 shadow-xl border mb-8 ${
             darkMode
@@ -139,13 +167,16 @@ export default function Home() {
               Add
             </button>
 
-            <button className="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-md transition">
-              ✨ Enhance
+            <button
+              onClick={enhanceText}
+              disabled={enhancing}
+              className="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white font-semibold shadow-md transition"
+            >
+              {enhancing ? "Enhancing..." : "✨ Enhance"}
             </button>
           </div>
         </div>
 
-        {/* Empty State */}
         {statements.length === 0 && (
           <div
             className={`text-center p-10 rounded-3xl border ${
@@ -162,7 +193,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Statements */}
         <div className="space-y-5">
           {statements.map((statement) => (
             <div
