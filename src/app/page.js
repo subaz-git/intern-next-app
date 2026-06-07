@@ -271,17 +271,17 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-slate-50">
-      <div className="max-w-4xl mx-auto p-6">
+      <div className="max-w-4xl mx-auto p-4 sm:p-6">
         <Header />
 
         {error && (
-          <div className="mb-6 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 transition-all duration-300">
+          <div className="mb-4 sm:mb-6 p-3 sm:p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm sm:text-base transition-all duration-300">
             ⚠️ {error}
           </div>
         )}
 
         {successMessage && (
-          <div className="mb-6 p-4 rounded-lg bg-green-50 border border-green-200 text-green-700 transition-all duration-300">
+          <div className="mb-4 sm:mb-6 p-3 sm:p-4 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm sm:text-base transition-all duration-300">
             ✅ {successMessage}
           </div>
         )}
@@ -311,11 +311,11 @@ export default function Home() {
         />
 
         {displayedQuestions.length === 0 ? (
-          <div className="text-center p-12 rounded-lg bg-white border border-slate-200 text-slate-500">
-            <p className="text-lg font-medium">
+          <div className="text-center p-8 sm:p-12 rounded-lg bg-white border border-slate-200 text-slate-500">
+            <p className="text-base sm:text-lg font-medium">
               {questions.length === 0 ? "No questions yet" : "No questions match your search"}
             </p>
-            <p className="mt-1">
+            <p className="mt-1 text-sm sm:text-base">
               {questions.length === 0 ? "Ask the first question to get started" : "Try adjusting your filters"}
             </p>
           </div>
