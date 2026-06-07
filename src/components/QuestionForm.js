@@ -6,18 +6,18 @@ export default function QuestionForm({
   enhancing,
 }) {
   return (
-    <div className="p-6 rounded-3xl mb-8 backdrop-blur-2xl border-2 bg-white/40 border-white/60 hover:border-white/80 transition-all duration-300">
+    <div className="p-6 rounded-lg mb-8 bg-white border border-slate-200 shadow-sm">
       <div className="flex gap-3 flex-col md:flex-row">
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask something incredible..."
-          className="flex-1 px-4 py-3 rounded-2xl backdrop-blur-xl border-2 bg-white/50 border-white/40 text-slate-900 placeholder-slate-600 focus:border-purple-400/50 focus:outline-none focus:bg-white/70 transition-all duration-300"
+          placeholder="Ask a question..."
+          className="flex-1 px-4 py-2 rounded-lg border border-slate-300 text-slate-900 placeholder-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all duration-200"
         />
 
         <button
           onClick={addQuestion}
-          className="px-8 py-3 rounded-2xl font-semibold backdrop-blur-xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-2 border-blue-400/50 hover:border-blue-300/50 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/50 hover:cursor-pointer active:scale-95 active:shadow-md"
+          className="px-6 py-2 rounded-lg font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-all duration-200 hover:cursor-pointer active:scale-95 shadow-sm"
         >
           ➕ Add
         </button>
@@ -25,7 +25,7 @@ export default function QuestionForm({
         <button
           onClick={enhanceQuestion}
           disabled={enhancing}
-          className="px-8 py-3 rounded-2xl font-semibold backdrop-blur-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white border-2 border-purple-400/50 hover:border-purple-300/50 transition-all duration-200 disabled:opacity-60 hover:shadow-lg hover:shadow-purple-500/50 hover:cursor-pointer active:scale-95 active:shadow-md"
+          className="px-6 py-2 rounded-lg font-semibold bg-purple-600 text-white hover:bg-purple-700 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed hover:cursor-pointer active:scale-95 shadow-sm"
         >
           {enhancing ? "✨ Enhancing..." : "✨ Enhance"}
         </button>

@@ -1,18 +1,13 @@
 export default function Header() {
   return (
-    <div className="flex justify-between items-center mb-12">
+    <div className="flex justify-between items-center mb-8 pb-6 border-b border-slate-200">
       <div>
-        <h1 className="text-6xl font-black bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-          Q-Stack
-        </h1>
-
-        <p className="mt-2 text-lg text-slate-500">
-          Ask • Enhance • Vote
-        </p>
+        <h1 className="text-5xl font-bold text-slate-900">Q-Stack</h1>
+        <p className="mt-1 text-slate-600">Smart Questions, Better Answers</p>
       </div>
 
-      <div className="px-6 py-3 rounded-2xl backdrop-blur-xl border-2 bg-white/40 border-white/60 font-semibold text-slate-700">
-        💡 Smart Questions
+      <div className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg font-medium">
+        💡 Questions Platform
       </div>
     </div>
   );

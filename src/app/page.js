@@ -208,18 +208,18 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+    <main className="min-h-screen bg-slate-50">
       <div className="max-w-4xl mx-auto p-6">
         <Header />
 
         {error && (
-          <div className="mb-6 p-4 rounded-2xl backdrop-blur-xl border-2 bg-red-400/20 border-red-400/60 text-red-700 transition-all duration-300">
+          <div className="mb-6 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 transition-all duration-300">
             ⚠️ {error}
           </div>
         )}
 
         {successMessage && (
-          <div className="mb-6 p-4 rounded-2xl backdrop-blur-xl border-2 bg-green-400/20 border-green-400/60 text-green-700 transition-all duration-300">
+          <div className="mb-6 p-4 rounded-lg bg-green-50 border border-green-200 text-green-700 transition-all duration-300">
             ✅ {successMessage}
           </div>
         )}
@@ -233,9 +233,9 @@ export default function Home() {
         />
 
         {questions.length === 0 ? (
-          <div className="text-center p-16 rounded-3xl backdrop-blur-xl border-2 border-white/50 text-slate-500">
-            <p className="text-2xl">🌟 No questions yet</p>
-            <p className="mt-2">Be the first to ask something!</p>
+          <div className="text-center p-12 rounded-lg bg-white border border-slate-200 text-slate-500">
+            <p className="text-lg font-medium">No questions yet</p>
+            <p className="mt-1">Ask the first question to get started</p>
           </div>
         ) : (
           <QuestionList
