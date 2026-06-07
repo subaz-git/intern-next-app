@@ -118,6 +118,7 @@ export default function Home() {
       .from("questions")
       .insert({
         text: input.trim(),
+        created_at: new Date().toISOString(),
       });
 
     if (error) {
