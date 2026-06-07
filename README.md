@@ -9,7 +9,8 @@ A page that stores questions that asked by several users
     - 1 Vote per question
     - 1 Vote per browser
 - [x] AI enhancement for question
-- [x] Dark/Light Theme 
+- [x] TimeStamp
+- [ ] Category  
 
 ---
 
