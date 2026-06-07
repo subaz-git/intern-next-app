@@ -30,11 +30,21 @@ const CATEGORIES = [
   "Other",
 ];
 
+const SORT_OPTIONS = [
+  { value: "score-high", label: "Score: High to Low" },
+  { value: "score-low", label: "Score: Low to High" },
+  { value: "newest", label: "Newest First" },
+  { value: "oldest", label: "Oldest First" },
+  { value: "alphabetical-az", label: "Alphabetical (A - Z)" },
+  { value: "alphabetical-za", label: "Alphabetical (Z - A)" },
+];
+
 export default function Home() {
   const [input, setInput] = useState("");
   const [category, setCategory] = useState("General");
   const [searchQuery, setSearchQuery] = useState("");
   const [filterCategory, setFilterCategory] = useState("All");
+  const [sortBy, setSortBy] = useState("score-high");
   const [questions, setQuestions] = useState([]);
   const [enhancing, setEnhancing] = useState(false);
   const [error, setError] = useState("");
@@ -50,8 +60,7 @@ export default function Home() {
 
     const { data: questionsData, error } = await supabase
       .from("questions")
-      .select("*")
-      .order("votes", { ascending: false });
+      .select("*");
 
     if (error) {
       console.error(error);
@@ -84,11 +93,40 @@ export default function Home() {
     setQuestions(questionsWithVotes);
   }
 
+  const getSortedQuestions = (questionsToSort) => {
+    const sorted = [...questionsToSort];
+
+    switch (sortBy) {
+      case "score-high":
+        return sorted.sort((a, b) => b.votes - a.votes);
+      case "score-low":
+        return sorted.sort((a, b) => a.votes - b.votes);
+      case "newest":
+        return sorted.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
+      case "oldest":
+        return sorted.sort(
+          (a, b) => new Date(a.created_at) - new Date(b.created_at)
+        );
+      case "alphabetical-az":
+        return sorted.sort((a, b) => a.text.localeCompare(b.text));
+      case "alphabetical-za":
+        return sorted.sort((a, b) => b.text.localeCompare(a.text));
+      default:
+        return sorted;
+    }
+  };
+
   const filteredQuestions = questions.filter((q) => {
-    const matchesSearch = q.text.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = q.text
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
     const matchesCategory = filterCategory === "All" || q.category === filterCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const displayedQuestions = getSortedQuestions(filteredQuestions);
 
   async function enhanceQuestion() {
     if (!input.trim()) return;
@@ -264,12 +302,15 @@ export default function Home() {
           setSearchQuery={setSearchQuery}
           filterCategory={filterCategory}
           setFilterCategory={setFilterCategory}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
           categories={CATEGORIES}
+          sortOptions={SORT_OPTIONS}
           totalQuestions={questions.length}
-          filteredCount={filteredQuestions.length}
+          filteredCount={displayedQuestions.length}
         />
 
-        {filteredQuestions.length === 0 ? (
+        {displayedQuestions.length === 0 ? (
           <div className="text-center p-12 rounded-lg bg-white border border-slate-200 text-slate-500">
             <p className="text-lg font-medium">
               {questions.length === 0 ? "No questions yet" : "No questions match your search"}
@@ -280,7 +321,7 @@ export default function Home() {
           </div>
         ) : (
           <QuestionList
-            questions={filteredQuestions}
+            questions={displayedQuestions}
             vote={vote}
           />
         )}

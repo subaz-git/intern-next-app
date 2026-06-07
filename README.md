@@ -11,7 +11,13 @@ A page that stores questions that asked by several users
 - [x] AI enhancement for question
 - [x] TimeStamp
 - [x] Category
-- [x] Search Questions 
+- [x] Search Questions
+- [x] Sort Quesions
+    - Modified (Old - New)
+    - Modified (New - Old)
+    - Alphabetical (A - Z)
+    - Alphabetical (A - A)
+- [ ] Live Updating Questions and Vote counts  
 
 ---
 
