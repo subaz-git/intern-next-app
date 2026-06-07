@@ -1,28 +1,19 @@
-export default function Header({ darkMode, setDarkMode }) {
+export default function Header() {
   return (
-    <div className="flex justify-between items-center mb-8">
+    <div className="flex justify-between items-center mb-12">
       <div>
-        <h1 className="text-5xl font-extrabold">
-          Question Stack
+        <h1 className="text-6xl font-black bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+          Q-Stack
         </h1>
 
-        <p
-          className={
-            darkMode
-              ? "text-slate-400"
-              : "text-slate-600"
-          }
-        >
-          Ask and vote on questions.
+        <p className="mt-2 text-lg text-slate-500">
+          Ask • Enhance • Vote
         </p>
       </div>
 
-      <button
-        onClick={() => setDarkMode(!darkMode)}
-        className="px-4 py-2 rounded-xl bg-blue-600 text-white"
-      >
-        {darkMode ? "☀️ Light" : "🌙 Dark"}
-      </button>
+      <div className="px-6 py-3 rounded-2xl backdrop-blur-xl border-2 bg-white/40 border-white/60 font-semibold text-slate-700">
+        💡 Smart Questions
+      </div>
     </div>
   );
 }
