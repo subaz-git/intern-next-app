@@ -10,8 +10,8 @@ A page that stores questions that asked by several users
     - 1 Vote per browser
 - [x] AI enhancement for question
 - [x] TimeStamp
-- [ ] Category
-- [ ] Search Questions 
+- [x] Category
+- [x] Search Questions 
 
 ---
 

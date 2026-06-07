@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 
 import Header from "@/components/Header";
 import QuestionForm from "@/components/QuestionForm";
+import SearchFilter from "@/components/SearchFilter";
 import QuestionList from "@/components/QuestionList";
 
 function getBrowserId() {
@@ -19,6 +20,7 @@ function getBrowserId() {
 }
 
 const CATEGORIES = [
+  "All",
   "General",
   "Technology",
   "Business",
@@ -31,6 +33,8 @@ const CATEGORIES = [
 export default function Home() {
   const [input, setInput] = useState("");
   const [category, setCategory] = useState("General");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterCategory, setFilterCategory] = useState("All");
   const [questions, setQuestions] = useState([]);
   const [enhancing, setEnhancing] = useState(false);
   const [error, setError] = useState("");
@@ -79,6 +83,12 @@ export default function Home() {
 
     setQuestions(questionsWithVotes);
   }
+
+  const filteredQuestions = questions.filter((q) => {
+    const matchesSearch = q.text.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = filterCategory === "All" || q.category === filterCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   async function enhanceQuestion() {
     if (!input.trim()) return;
@@ -243,20 +253,34 @@ export default function Home() {
           setInput={setInput}
           category={category}
           setCategory={setCategory}
-          categories={CATEGORIES}
+          categories={CATEGORIES.slice(1)}
           addQuestion={addQuestion}
           enhanceQuestion={enhanceQuestion}
           enhancing={enhancing}
         />
 
-        {questions.length === 0 ? (
+        <SearchFilter
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          filterCategory={filterCategory}
+          setFilterCategory={setFilterCategory}
+          categories={CATEGORIES}
+          totalQuestions={questions.length}
+          filteredCount={filteredQuestions.length}
+        />
+
+        {filteredQuestions.length === 0 ? (
           <div className="text-center p-12 rounded-lg bg-white border border-slate-200 text-slate-500">
-            <p className="text-lg font-medium">No questions yet</p>
-            <p className="mt-1">Ask the first question to get started</p>
+            <p className="text-lg font-medium">
+              {questions.length === 0 ? "No questions yet" : "No questions match your search"}
+            </p>
+            <p className="mt-1">
+              {questions.length === 0 ? "Ask the first question to get started" : "Try adjusting your filters"}
+            </p>
           </div>
         ) : (
           <QuestionList
-            questions={questions}
+            questions={filteredQuestions}
             vote={vote}
           />
         )}
