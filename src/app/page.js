@@ -23,6 +23,8 @@ export default function Home() {
   const [questions, setQuestions] = useState([]);
   const [darkMode, setDarkMode] = useState(true);
   const [enhancing, setEnhancing] = useState(false);
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     loadQuestions();
@@ -30,6 +32,7 @@ export default function Home() {
 
   async function loadQuestions() {
     const browserId = getBrowserId();
+    setError("");
 
     const { data: questionsData, error } = await supabase
       .from("questions")
@@ -38,6 +41,7 @@ export default function Home() {
 
     if (error) {
       console.error(error);
+      setError("Failed to load questions. Please refresh.");
       return;
     }
 
@@ -48,6 +52,7 @@ export default function Home() {
 
     if (votesError) {
       console.error(votesError);
+      setError("Failed to load your votes. Please refresh.");
       return;
     }
 
@@ -70,6 +75,7 @@ export default function Home() {
 
     try {
       setEnhancing(true);
+      setError("");
 
       const res = await fetch("/api/enhance", {
         method: "POST",
@@ -83,11 +89,19 @@ export default function Home() {
 
       const data = await res.json();
 
+      if (!res.ok) {
+        setError(data.error || "Failed to enhance question");
+        return;
+      }
+
       if (data.enhanced) {
         setInput(data.enhanced.trim());
+        setSuccessMessage("Question enhanced!");
+        setTimeout(() => setSuccessMessage(""), 3000);
       }
     } catch (err) {
       console.error(err);
+      setError("Error enhancing question. Please try again.");
     } finally {
       setEnhancing(false);
     }
@@ -97,7 +111,7 @@ export default function Home() {
     const words = input.trim().split(/\s+/);
 
     if (words.length < 3) {
-      alert("Question must contain at least 3 words.");
+      setError("Question must contain at least 3 words.");
       return;
     }
 
@@ -109,15 +123,20 @@ export default function Home() {
 
     if (error) {
       console.error(error);
+      setError("Failed to add question. Please try again.");
       return;
     }
 
     setInput("");
+    setError("");
+    setSuccessMessage("Question added!");
+    setTimeout(() => setSuccessMessage(""), 3000);
     await loadQuestions();
   }
 
   async function vote(question, voteType) {
     try {
+      setError("");
       const browserId = getBrowserId();
 
       const { data: existingVote, error: checkError } = await supabase
@@ -129,6 +148,7 @@ export default function Home() {
 
       if (checkError) {
         console.error(checkError);
+        setError("Failed to check vote. Please try again.");
         return;
       }
 
@@ -159,6 +179,7 @@ export default function Home() {
 
       if (votesError) {
         console.error(votesError);
+        setError("Failed to update votes. Please refresh.");
         return;
       }
 
@@ -176,12 +197,14 @@ export default function Home() {
 
       if (updateError) {
         console.error(updateError);
+        setError("Failed to update question score.");
         return;
       }
 
       await loadQuestions();
     } catch (err) {
       console.error(err);
+      setError("An error occurred while voting.");
     }
   }
 
@@ -198,6 +221,18 @@ export default function Home() {
           darkMode={darkMode}
           setDarkMode={setDarkMode}
         />
+
+        {error && (
+          <div className="mb-4 p-4 rounded-xl bg-red-500/20 border border-red-500 text-red-400">
+            {error}
+          </div>
+        )}
+
+        {successMessage && (
+          <div className="mb-4 p-4 rounded-xl bg-green-500/20 border border-green-500 text-green-400">
+            {successMessage}
+          </div>
+        )}
 
         <QuestionForm
           input={input}

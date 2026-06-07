@@ -23,7 +23,7 @@ git clone https://github.com/subaz-git/intern-next-app.git
 2. Install Packages
 
 ```
-next build
+npm install
 ```
 
 3. Run server

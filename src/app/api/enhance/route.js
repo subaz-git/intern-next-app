@@ -1,4 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
+import { rateLimit } from "@/lib/rateLimit";
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
@@ -12,6 +13,19 @@ export async function POST(req) {
       return Response.json(
         { error: "Text is required" },
         { status: 400 }
+      );
+    }
+
+    // Rate limit: 5 requests per minute per IP
+    const ip = req.headers.get("x-forwarded-for") || "unknown";
+    const limitCheck = rateLimit(`enhance:${ip}`, 5, 60000);
+
+    if (!limitCheck.allowed) {
+      return Response.json(
+        {
+          error: `Rate limited. Please try again in ${limitCheck.retryAfter} seconds.`,
+        },
+        { status: 429, headers: { "Retry-After": limitCheck.retryAfter } }
       );
     }
 
