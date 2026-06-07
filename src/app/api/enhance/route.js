@@ -30,7 +30,7 @@ export async function POST(req) {
     }
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.5-flash-lite",
       contents: `
 Improve the following question or statement.
 

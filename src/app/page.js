@@ -18,8 +18,19 @@ function getBrowserId() {
   return id;
 }
 
+const CATEGORIES = [
+  "General",
+  "Technology",
+  "Business",
+  "Science",
+  "Education",
+  "Health",
+  "Other",
+];
+
 export default function Home() {
   const [input, setInput] = useState("");
+  const [category, setCategory] = useState("General");
   const [questions, setQuestions] = useState([]);
   const [enhancing, setEnhancing] = useState(false);
   const [error, setError] = useState("");
@@ -118,6 +129,7 @@ export default function Home() {
       .from("questions")
       .insert({
         text: input.trim(),
+        category: category,
         created_at: new Date().toISOString(),
       });
 
@@ -128,6 +140,7 @@ export default function Home() {
     }
 
     setInput("");
+    setCategory("General");
     setError("");
     setSuccessMessage("Question added!");
     setTimeout(() => setSuccessMessage(""), 3000);
@@ -228,6 +241,9 @@ export default function Home() {
         <QuestionForm
           input={input}
           setInput={setInput}
+          category={category}
+          setCategory={setCategory}
+          categories={CATEGORIES}
           addQuestion={addQuestion}
           enhanceQuestion={enhanceQuestion}
           enhancing={enhancing}
